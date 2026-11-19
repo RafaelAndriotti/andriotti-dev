@@ -124,6 +124,12 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .pp-check span { height: 8cqi; border-radius: 1.6cqi; background: var(--c-soft); position: relative; }
 .pp-check span::before { content: ""; position: absolute; left: 2.4cqi; top: 50%; width: 3.4cqi; height: 3.4cqi; transform: translateY(-50%); border-radius: 50%; background: var(--c); }
 
+/* ---------- Traço que acompanha o scroll ---------- */
+main { position: relative; }
+/* Fica acima dos fundos das seções e abaixo do conteúdo delas */
+.scroll-stroke { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; color: var(--color-dark-link); }
+main > section > * { position: relative; z-index: 1; }
+
 /* ---------- 1. Stage ---------- */
 .stage {
   min-height: clamp(680px, calc(100svh - 44px), 856px);
@@ -159,34 +165,37 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 
 /* ---------- 3. Highlights ---------- */
 .highlights { background: var(--color-charcoal); padding: 144px 0 120px; }
-.hl-track, .cg-track, .offer-track {
+.cg-track, .offer-track {
   display: flex; gap: 20px; overflow-x: auto; overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory; scroll-padding-inline: var(--gx);
   padding-inline: var(--gx); scrollbar-width: none;
 }
-.hl-track::-webkit-scrollbar, .cg-track::-webkit-scrollbar, .offer-track::-webkit-scrollbar { display: none; }
-.hl-track { margin-top: 48px; }
-.hl-slide {
-  flex: none; position: relative; overflow: hidden; scroll-snap-align: start;
-  width: min(1260px, 100vw - 2 * var(--gx)); height: clamp(420px, 44vw, 612px);
+.cg-track::-webkit-scrollbar, .offer-track::-webkit-scrollbar { display: none; }
+.paddle:hover { background: rgba(73, 73, 76, 0.7256); }
+
+/* Deck: cards presos em cascata sob a navbar; o JS só encolhe os de trás */
+.deck { margin-top: 48px; }
+.deck__item {
+  position: sticky; top: calc(44px + 4vh + var(--i) * 18px);
+  margin-bottom: 28vh;
+}
+.deck__item:last-child { margin-bottom: 0; }
+.deck-card {
+  position: relative; overflow: hidden; transform-origin: 50% 0;
+  height: min(clamp(420px, 44vw, 612px), calc(100svh - 44px - 8vh - 72px));
   border-radius: 28px;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.08), 0 -30px 60px -20px rgba(0, 0, 0, 0.8);
   background:
     radial-gradient(ellipse 55% 60% at 68% 75%, hsl(var(--glow) 80% 45% / 0.55), transparent 70%),
     radial-gradient(ellipse 40% 50% at 15% 100%, hsl(calc(var(--glow) + 40) 75% 40% / 0.35), transparent 70%),
     #050505;
 }
-.hl-claim { position: absolute; top: 44px; left: 48px; max-width: 440px; z-index: 1; font-size: 28px; line-height: 1.143; font-weight: 600; letter-spacing: 0.007em; color: var(--color-secondary); }
+.deck-card__info { position: absolute; top: 44px; left: 48px; z-index: 1; max-width: 440px; }
+.deck-card__num { font-size: 14px; font-weight: 600; letter-spacing: 0.04em; color: var(--color-secondary); }
+.hl-claim { margin-top: 12px; font-size: 28px; line-height: 1.143; font-weight: 600; letter-spacing: 0.007em; color: var(--color-secondary); }
 .hl-claim span { color: var(--color-headline); }
+.deck-card__url { margin-top: 16px; font-size: 14px; color: var(--color-muted); }
 .plane--slide { position: absolute; left: 50%; bottom: -12%; width: 58%; transform: translateX(-38%); }
-.hl-controller { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 24px; }
-.hl-dots { display: flex; align-items: center; gap: 14px; height: 44px; padding: 0 20px; border-radius: 980px; background: rgba(66, 66, 69, 0.72); backdrop-filter: blur(20px); }
-.hl-dot { width: 8px; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.42); transition: width 0.3s ease, background 0.1s linear; }
-.hl-dot.is-active { width: 32px; background: var(--color-headline); }
-.hl-pause { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: rgba(66, 66, 69, 0.72); color: rgba(255, 255, 255, 0.85); transition: background 0.1s linear; }
-.hl-pause:hover, .paddle:hover { background: rgba(73, 73, 76, 0.7256); }
-.hl-pause .i-play { display: none; }
-.hl-pause.is-paused .i-play { display: block; }
-.hl-pause.is-paused .i-pause { display: none; }
 
 /* ---------- 4. Macro ---------- */
 .chapter .container + .container { margin-top: 64px; }
@@ -404,8 +413,9 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
   .stage__bottom { flex-direction: column; align-items: stretch; gap: 24px; margin-top: 56px; }
   .platter { justify-content: space-between; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .hl-slide { height: 460px; }
-  .hl-claim { top: 24px; left: 24px; right: 24px; font-size: 21px; }
+  .deck-card { height: min(460px, calc(100svh - 44px - 8vh - 72px)); }
+  .deck-card__info { top: 24px; left: 24px; right: 24px; }
+  .hl-claim { font-size: 21px; }
   .plane--slide { width: 92%; transform: translateX(-50%); bottom: -6%; }
   .cg-item { width: 280px; }
   .cg-item--wide { width: 330px; }
