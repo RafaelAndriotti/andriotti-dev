@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { GlobalNav } from "./components/Navs";
 import Stage from "./components/Stage";
 import Highlights from "./components/Highlights";
@@ -5,12 +6,15 @@ import { Overview, ServicesMacro, ServicesGallery, Performance, About } from "./
 import Comparison from "./components/Comparison";
 import Pricing from "./components/Pricing";
 import { Directory, Footer } from "./components/Ending";
+import { ScrollStroke } from "./components/ui/svg-follow-scroll";
 
 export default function App() {
+  const mainRef = useRef(null);
+
   return (
     <>
       <GlobalNav />
-      <main>
+      <main ref={mainRef}>
         <Stage />
         <Overview />
         <Highlights />
@@ -21,6 +25,7 @@ export default function App() {
         <Comparison />
         <Pricing />
         <Directory />
+        <ScrollStroke alvo={mainRef} />
       </main>
       <Footer />
     </>
