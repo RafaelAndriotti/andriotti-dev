@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 
 // Espiral inicial do traço (coordenadas originais, começando em 876.605 394.131)
@@ -93,8 +93,9 @@ export function ScrollStroke({ alvo }) {
   const [caixa, setCaixa] = useState(null);
   const [semente] = useState(() => Math.floor(Math.random() * 2 ** 32));
 
-  // Mede o alvo e redesenha o caminho quando o tamanho da página muda
-  useLayoutEffect(() => {
+  // Mede o alvo e redesenha o caminho quando o tamanho da página muda.
+  // useEffect (e não useLayoutEffect): o ref do <main> pai só é ligado depois dos layout effects dos filhos
+  useEffect(() => {
     const el = alvo.current;
     if (!el) return;
     const medir = () => setCaixa({ w: el.offsetWidth, h: el.offsetHeight, tela: window.innerHeight });
