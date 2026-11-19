@@ -1,29 +1,19 @@
 import { navegacao } from "../data/content";
+import { Dock, DockItem } from "./ui/dock";
 
+// Barra superior fixa. Os links crescem conforme o cursor passa (efeito dock).
 export function GlobalNav() {
   return (
     <header className="globalnav">
       <div className="globalnav__inner">
         <a href="#topo" className="globalnav__brand">andriotti.dev</a>
-        <nav className="globalnav__links" aria-label="Principal">
-          {navegacao.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
-        </nav>
+        <Dock as="nav" className="globalnav__links" aria-label="Principal">
+          {navegacao.map((n) => (
+            <DockItem key={n.href} href={n.href}>{n.label}</DockItem>
+          ))}
+        </Dock>
         <a href="#precos" className="globalnav__cta">Orçamento</a>
       </div>
     </header>
-  );
-}
-
-// Barra flutuante que aparece depois da abertura
-export function LocalNav({ visivel }) {
-  return (
-    <nav className={`localnav ${visivel ? "is-visible" : ""}`} aria-label="Atalhos">
-      <span className="localnav__name">Andriotti.dev</span>
-      <div className="localnav__right">
-        <a href="#servicos" className="localnav__link">Serviços</a>
-        <a href="#comparar" className="localnav__link">Comparar</a>
-        <a href="#precos" className="btn btn--xs">Orçamento</a>
-      </div>
-    </nav>
   );
 }
