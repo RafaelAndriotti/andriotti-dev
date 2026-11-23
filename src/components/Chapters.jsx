@@ -62,7 +62,13 @@ export function ServicesGallery() {
     return () => removeEventListener("resize", atualizar);
   }, []);
 
-  const rolar = (dir) => trackRef.current.scrollBy({ left: dir * 392, behavior: "smooth" });
+  // Avança um card por vez, medindo o card real (no celular ele é mais estreito)
+  const rolar = (dir) => {
+    const t = trackRef.current;
+    const item = t.firstElementChild;
+    const passo = item ? item.offsetWidth + parseFloat(getComputedStyle(t).columnGap || 0) : 392;
+    t.scrollBy({ left: dir * passo, behavior: "smooth" });
+  };
 
   return (
     <section className="chapter chapter--charcoal" id="galeria" aria-label="O que eu faço">
