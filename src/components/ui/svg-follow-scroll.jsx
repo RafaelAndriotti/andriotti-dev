@@ -150,7 +150,7 @@ export function ScrollStroke({ alvo }) {
         ref={pathRef}
         d={montarCaminho(caixa.w, caixa.h, caixa.tela, semente)}
         stroke="currentColor"
-        strokeWidth={Math.max(6, Math.min(12, caixa.w / 140))}
+        strokeWidth={Math.max(3, Math.min(12, caixa.w / 140))}
         strokeLinecap="round"
         style={reduzir ? undefined : { pathLength }}
       />
